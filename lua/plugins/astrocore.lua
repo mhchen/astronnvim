@@ -1,6 +1,4 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
-
--- AstroCore provides a central place to modify mappings, vim options, autocommands, and more!
+-- AstrrCore provides a central place to modify mappings, vim options, autocommands, and more!
 -- Configuration documentation can be found with `:h astrocore`
 -- NOTE: We highly recommend setting up the Lua Language Server (`:LspInstall lua_ls`)
 --       as this provides autocomplete and documentation while editing
@@ -27,6 +25,7 @@ return {
     -- vim options can be configured here
     options = {
       opt = { -- vim.opt.<key>
+        clipboard = "",
         relativenumber = true, -- sets vim.opt.relativenumber
         number = true, -- sets vim.opt.number
         spell = false, -- sets vim.opt.spell
@@ -66,6 +65,50 @@ return {
 
         -- setting a mapping to false will disable it
         -- ["<C-S>"] = false,
+
+        ["<C-p>"] = { function() require("telescope.builtin").find_files() end },
+        ["\\"] = false,
+        ["<Leader>a"] = {
+          ":Ack! ",
+          desc = "Open Ack.vim comand",
+        },
+        ["<leader>cp"] = {
+          function()
+            local relative_path = vim.fn.fnamemodify(vim.fn.expand "%", ":.")
+            vim.fn.setreg("+", relative_path)
+            print("Copied: " .. relative_path)
+          end,
+        },
+        ["<leader>og"] = {
+          function()
+            local is_git = vim.fn.system("git rev-parse --is-inside-work-tree 2>/dev/null"):find "true"
+            if not is_git then
+              print "Not in a git repo"
+              return
+            end
+
+            local branch = vim.fn.system("git branch --show-current 2>/dev/null"):gsub("\n", "")
+            local relative_path = vim.fn.system("git ls-files --full-name " .. vim.fn.expand "%"):gsub("\n", "")
+            local remote_url = vim.fn.system("git remote get-url origin"):gsub("\n", "")
+            local github_path = remote_url:match "github.com[:/](.+)%.git$" or remote_url:match "github.com[:/](.+)$"
+
+            if not github_path then
+              print "Could not determine GitHub repository URL"
+              return
+            end
+
+            local url = string.format("https://github.com/%s/blob/%s/%s", github_path, branch, relative_path)
+
+            vim.fn.system(string.format('open "%s"', url))
+            print("Opened: " .. url)
+          end,
+        },
+      },
+      c = {
+        ["%%"] = {
+          "<c-r>=expand('%:h')<cr>/",
+          desc = "Expand current file's directory path",
+        },
       },
     },
   },

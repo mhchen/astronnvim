@@ -104,6 +104,12 @@ return {
           end,
         },
       },
+      v = {
+        ["<leader>y"] = {
+          '"+y',
+          desc = "Copy to system clipboard",
+        },
+      },
       c = {
         ["%%"] = {
           "<c-r>=expand('%:h')<cr>/",

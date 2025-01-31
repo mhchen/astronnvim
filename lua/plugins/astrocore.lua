@@ -26,6 +26,7 @@ return {
     options = {
       opt = { -- vim.opt.<key>
         clipboard = "",
+        gdefault = true,
         relativenumber = true, -- sets vim.opt.relativenumber
         number = true, -- sets vim.opt.number
         spell = false, -- sets vim.opt.spell

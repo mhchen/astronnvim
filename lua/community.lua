@@ -10,5 +10,6 @@ return {
   { import = "astrocommunity.recipes.heirline-vscode-winbar" },
   { import = "astrocommunity.colorscheme.catppuccin" },
   { import = "astrocommunity.colorscheme.dracula-nvim" },
+  { import = "astrocommunity.git.git-blame-nvim" },
   -- import/override with your plugins folder
 }

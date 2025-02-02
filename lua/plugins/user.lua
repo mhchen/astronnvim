@@ -3,10 +3,6 @@
 
 ---@type LazySpec
 return {
-
-  -- == Examples of Adding Plugins ==
-
-  "andweeb/presence.nvim",
   {
     "ray-x/lsp_signature.nvim",
     event = "BufRead",
@@ -47,9 +43,12 @@ return {
     config = function(plugin, opts)
       require "astronvim.plugins.configs.luasnip"(plugin, opts) -- include the default astronvim config that calls the setup call
       -- add more custom luasnip configuration such as filetype extend or custom snippets
-      local luasnip = require "luasnip"
-      luasnip.filetype_extend("javascript", { "javascriptreact" })
-      luasnip.filetype_extend("typescript", { "typescriptreact" })
+      local ls = require "luasnip"
+      local t = ls.text_node
+      local s = ls.snippet
+      ls.filetype_extend("javascript", { "javascriptreact" })
+      ls.filetype_extend("typescript", { "typescriptreact" })
+      ls.add_snippets("lua", s("bloop", { t "Wow! Text!" }))
     end,
   },
 
